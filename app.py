@@ -9,8 +9,8 @@ import datetime
 
 # ----------------- PAGE CONFIG -----------------
 st.set_page_config(
-    page_title="Smart Warehouse ERP Platform",
-    page_icon="📦",
+    page_title="OmniLogix | Enterprise Warehouse ERP",
+    page_icon="🏢",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -18,7 +18,6 @@ st.set_page_config(
 # ----------------- MODERN ENTERPRISE DESIGN CSS -----------------
 st.markdown("""
 <style>
-    /* Global Styles */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
     
     html, body, [class*="css"] {
@@ -26,51 +25,26 @@ st.markdown("""
     }
 
     .main-header {
-        background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+        background: linear-gradient(135deg, #090d16 0%, #172554 50%, #090d16 100%);
         padding: 24px 28px;
         border-radius: 12px;
         color: white;
-        border: 1px solid #334155;
+        border: 1px solid #1e293b;
         box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
         margin-bottom: 24px;
     }
     
     .cred-box {
-        background-color: #0f172a;
+        background-color: #0b1120;
         padding: 16px 20px;
         border-radius: 8px;
-        border: 1px solid #334155;
+        border: 1px solid #1e293b;
         border-left: 5px solid #3b82f6;
         font-family: 'JetBrains Mono', monospace;
         font-size: 13px;
         color: #93c5fd;
         margin-bottom: 20px;
         line-height: 1.7;
-    }
-
-    .stat-badge {
-        display: inline-block;
-        padding: 3px 8px;
-        border-radius: 4px;
-        font-size: 11px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-    .badge-optimal { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
-    .badge-warning { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
-    .badge-danger { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
-    
-    .quick-cred-btn {
-        background: #1e293b;
-        color: #e2e8f0;
-        border: 1px solid #475569;
-        border-radius: 6px;
-        padding: 8px 12px;
-        font-size: 12px;
-        cursor: pointer;
-        text-align: center;
-        transition: all 0.2s;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -79,15 +53,15 @@ st.markdown("""
 USERS_DATABASE = {
     "admin": {
         "password": "admin123",
-        "name": "System Administrator",
+        "name": "Global Operations Director",
         "role": "Administrator",
-        "badge": "SUPERUSER"
+        "badge": "ENTERPRISE PRIVILEGES"
     },
     "staff": {
         "password": "staff123",
-        "name": "Warehouse Operations Staff",
+        "name": "Fulfillment Center Lead",
         "role": "Staff",
-        "badge": "OPERATOR"
+        "badge": "DISPATCH OPS"
     }
 }
 
@@ -98,33 +72,99 @@ if "logged_in" not in st.session_state:
 
 if "products" not in st.session_state:
     st.session_state.products = [
-        {"id": 1, "sku": "SKU-SRV-901", "name": "Enterprise Edge Micro-Server R450", "category": "Hardware", "unit_price": 85000, "cost_price": 68000, "current_stock": 24, "reserved_stock": 4, "safety_stock": 10, "warehouse": "Central Hub (MIHAN)", "location": "Zone A / A2 / B14", "daily_sales": 2.5},
-        {"id": 2, "sku": "SKU-SWT-408", "name": "Managed 48-Port PoE+ L3 Core Switch", "category": "Networking", "unit_price": 42000, "cost_price": 31000, "current_stock": 18, "reserved_stock": 6, "safety_stock": 8, "warehouse": "Central Hub (MIHAN)", "location": "Zone A / A4 / B02", "daily_sales": 3.0},
-        {"id": 3, "sku": "SKU-SSD-204", "name": "NVMe U.3 Enterprise SSD 7.68TB", "category": "Storage", "unit_price": 28500, "cost_price": 21000, "current_stock": 9, "reserved_stock": 3, "safety_stock": 15, "warehouse": "West Coast Depot", "location": "Zone B / A1 / B08", "daily_sales": 4.2},
-        {"id": 4, "sku": "SKU-SCN-101", "name": "Rugged 2D Barcode Scanner Terminal", "category": "Equipment", "unit_price": 16500, "cost_price": 11500, "current_stock": 35, "reserved_stock": 2, "safety_stock": 12, "warehouse": "Pune Logistics Spoke", "location": "Zone C / A1 / B05", "daily_sales": 1.8},
-        {"id": 5, "sku": "SKU-UPS-600", "name": "Online Double-Conversion Rack UPS 6kVA", "category": "Power", "unit_price": 64000, "cost_price": 52000, "current_stock": 6, "reserved_stock": 1, "safety_stock": 10, "warehouse": "Central Hub (MIHAN)", "location": "Zone Heavy / Pallet 01", "daily_sales": 1.2},
-        {"id": 6, "sku": "SKU-RAM-128", "name": "128GB DDR5 ECC Registered Server Memory Kit", "category": "Storage", "unit_price": 48000, "cost_price": 38000, "current_stock": 40, "reserved_stock": 5, "safety_stock": 14, "warehouse": "Central Hub (MIHAN)", "location": "Zone A / A1 / B09", "daily_sales": 3.5}
+        {
+            "id": 1, "sku": "SKU-HPC-9400", "name": "Dell PowerEdge R760 High-Compute Rack Server (Dual Xeon Platinum, 512GB ECC)",
+            "category": "Enterprise Compute", "unit_price": 485000, "cost_price": 395000,
+            "current_stock": 22, "reserved_stock": 4, "safety_stock": 8,
+            "warehouse": "Nagpur Regional Fulfillment Hub (MIHAN Logistics Corridor)",
+            "location": "Aisle 02 / Bay C / Tier 04", "daily_sales": 1.5
+        },
+        {
+            "id": 2, "sku": "SKU-NET-8848", "name": "Cisco Catalyst 9300 Series 48-Port Multi-Gigabit PoE+ Core Switch",
+            "category": "Carrier-Grade Networking", "unit_price": 182000, "cost_price": 142000,
+            "current_stock": 30, "reserved_stock": 6, "safety_stock": 10,
+            "warehouse": "Nagpur Regional Fulfillment Hub (MIHAN Logistics Corridor)",
+            "location": "Aisle 04 / Bay A / Tier 02", "daily_sales": 2.2
+        },
+        {
+            "id": 3, "sku": "SKU-SSD-7680", "name": "Micron 9400 PRO Enterprise U.3 NVMe PCIe 4.0 7.68TB Solid State Drive",
+            "category": "High-Throughput Storage", "unit_price": 54000, "cost_price": 41000,
+            "current_stock": 11, "reserved_stock": 3, "safety_stock": 15,
+            "warehouse": "Mumbai Port Distribution Gateway (Bhiwandi Hub)",
+            "location": "Aisle 01 / Bay D / Tier 03", "daily_sales": 3.8
+        },
+        {
+            "id": 4, "sku": "SKU-BAR-9900", "name": "Zebra TC58 Enterprise Rugged Mobile Industrial Barcode Terminal",
+            "category": "Logistics Hardware", "unit_price": 38500, "cost_price": 27500,
+            "current_stock": 45, "reserved_stock": 5, "safety_stock": 14,
+            "warehouse": "Pune Technology Logistics Park (Chakan MIDC)",
+            "location": "Aisle 01 / Bay B / Tier 01", "daily_sales": 2.8
+        },
+        {
+            "id": 5, "sku": "SKU-UPS-10KV", "name": "Schneider Electric APC Smart-UPS On-Line 10kVA Rackmount Power System",
+            "category": "Critical Power Infrastructure", "unit_price": 215000, "cost_price": 175000,
+            "current_stock": 7, "reserved_stock": 2, "safety_stock": 8,
+            "warehouse": "Nagpur Regional Fulfillment Hub (MIHAN Logistics Corridor)",
+            "location": "Heavy Bay 01 / Ground Pallet", "daily_sales": 1.1
+        },
+        {
+            "id": 6, "sku": "SKU-ECC-256G", "name": "Samsung Enterprise 256GB DDR5 Quad-Rank Registered ECC Server Memory Module",
+            "category": "High-Throughput Storage", "unit_price": 89000, "cost_price": 71000,
+            "current_stock": 55, "reserved_stock": 8, "safety_stock": 16,
+            "warehouse": "Nagpur Regional Fulfillment Hub (MIHAN Logistics Corridor)",
+            "location": "Aisle 03 / Bay A / Tier 05", "daily_sales": 4.5
+        }
     ]
 
 if "orders" not in st.session_state:
     st.session_state.orders = [
-        {"id": "ORD-2026-1049", "customer": "Persistent Systems Enterprise Center", "sku": "SKU-SRV-901", "qty": 2, "total": 170000, "status": "Picking", "warehouse": "Central Hub (MIHAN)", "tracking": "TRK-PENDING", "created_at": "2026-11-15 10:30"},
-        {"id": "ORD-2026-1050", "customer": "Tata Consultancy Services SEZ", "sku": "SKU-SWT-408", "qty": 3, "total": 126000, "status": "Packing", "warehouse": "Central Hub (MIHAN)", "tracking": "TRK-PENDING", "created_at": "2026-11-15 11:45"},
-        {"id": "ORD-2026-1051", "customer": "Infosys Cyber City Campus", "sku": "SKU-SSD-204", "qty": 5, "total": 142500, "status": "Dispatched", "warehouse": "West Coast Depot", "tracking": "EXP-DEL-992140", "created_at": "2026-11-14 16:10"},
-        {"id": "ORD-2026-1052", "customer": "Wipro Technologies Circle", "sku": "SKU-SCN-101", "qty": 4, "total": 66000, "status": "Delivered", "warehouse": "Pune Logistics Spoke", "tracking": "BLUE-DART-554109", "created_at": "2026-11-13 09:20"}
+        {
+            "id": "SO-2026-9041", "customer": "Persistent Systems Global Delivery Center",
+            "sku": "SKU-HPC-9400", "qty": 2, "total": 970000, "status": "Picking",
+            "warehouse": "Nagpur Regional Fulfillment Hub (MIHAN Logistics Corridor)",
+            "tracking": "TRK-PENDING", "created_at": "2026-11-15 10:30"
+        },
+        {
+            "id": "SO-2026-9042", "customer": "Tata Consultancy Services (TCS) Cloud Infrastructure Division",
+            "sku": "SKU-NET-8848", "qty": 3, "total": 546000, "status": "Packing",
+            "warehouse": "Nagpur Regional Fulfillment Hub (MIHAN Logistics Corridor)",
+            "tracking": "TRK-PENDING", "created_at": "2026-11-15 11:45"
+        },
+        {
+            "id": "SO-2026-9043", "customer": "Infosys Data Center Operations Group",
+            "sku": "SKU-SSD-7680", "qty": 5, "total": 270000, "status": "Dispatched",
+            "warehouse": "Mumbai Port Distribution Gateway (Bhiwandi Hub)",
+            "tracking": "DHL-EXP-940214", "created_at": "2026-11-14 16:10"
+        },
+        {
+            "id": "SO-2026-9044", "customer": "HCL Technologies Enterprise Networks Unit",
+            "sku": "SKU-BAR-9900", "qty": 4, "total": 154000, "status": "Delivered",
+            "warehouse": "Pune Technology Logistics Park (Chakan MIDC)",
+            "tracking": "BLUEDART-EXP-88120", "created_at": "2026-11-13 09:20"
+        }
     ]
 
 if "purchase_orders" not in st.session_state:
     st.session_state.purchase_orders = [
-        {"id": "PO-2026-081", "supplier": "Apex Semiconductor Corp", "sku": "SKU-SSD-204", "qty": 30, "total": 630000, "status": "Received", "grn": "GRN-2026-0042", "warehouse": "West Coast Depot", "date": "2026-11-10"},
-        {"id": "PO-2026-094", "supplier": "SysTech Network Hardware Ltd", "sku": "SKU-SWT-408", "qty": 20, "total": 620000, "status": "In Transit", "grn": "Pending Receipt", "warehouse": "Central Hub (MIHAN)", "date": "2026-11-12"}
+        {
+            "id": "PO-2026-081", "supplier": "Micron Semiconductor Industrial Solutions",
+            "sku": "SKU-SSD-7680", "qty": 35, "total": 1435000, "status": "Received",
+            "grn": "GRN-2026-0042", "warehouse": "Mumbai Port Distribution Gateway (Bhiwandi Hub)",
+            "date": "2026-11-10"
+        },
+        {
+            "id": "PO-2026-094", "supplier": "Cisco Systems Direct OEM Wholesale",
+            "sku": "SKU-NET-8848", "qty": 20, "total": 2840000, "status": "In Transit",
+            "grn": "Pending Inbound Inspection", "warehouse": "Nagpur Regional Fulfillment Hub (MIHAN Logistics Corridor)",
+            "date": "2026-11-12"
+        }
     ]
 
 if "audit_logs" not in st.session_state:
     st.session_state.audit_logs = [
-        {"timestamp": "2026-11-15 09:12", "user": "Admin User", "action": "PO Received", "details": "GRN-2026-0042 processed. +30 units SKU-SSD-204 booked into West Coast Depot."},
-        {"timestamp": "2026-11-15 10:32", "user": "System (Auto-Reserve)", "action": "Stock Reserved", "details": "ORD-2026-1049 locked 2x SKU-SRV-901 in Central Hub."},
-        {"timestamp": "2026-11-15 11:50", "user": "Staff Operator", "action": "Order Picked", "details": "ORD-2026-1050 picked from Zone A / Aisle 4. Moved to packing table."}
+        {"timestamp": "2026-11-15 09:12", "user": "Global Operations Director", "action": "Inbound Verification & GRN", "details": "GRN-2026-0042 verified. +35 units SKU-SSD-7680 received into Mumbai Port Gateway."},
+        {"timestamp": "2026-11-15 10:32", "user": "Real-Time Allocation Engine", "action": "Stock Reserved", "details": "SO-2026-9041 allocated 2x SKU-HPC-9400 for Persistent Systems Global Center."},
+        {"timestamp": "2026-11-15 11:50", "user": "Fulfillment Center Lead", "action": "Pick Completed", "details": "SO-2026-9042 successfully picked from Aisle 04 / Bay A. Routed to Packing Station 02."}
     ]
 
 # ================= LOGIN INTERFACE =================
@@ -133,60 +173,58 @@ if not st.session_state.logged_in:
     with col_center:
         st.markdown("""
         <div style="text-align: center; margin-top: 35px; margin-bottom: 24px;">
-            <div style="font-size: 50px; margin-bottom: 8px;">📦</div>
-            <h1 style="margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.5px;">Smart Warehouse ERP</h1>
-            <p style="color: #94a3b8; font-size: 14px; margin-top: 6px;">Enterprise Order Fulfillment & Multi-Warehouse Control System</p>
+            <div style="font-size: 52px; margin-bottom: 8px;">🏢</div>
+            <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.5px;">OmniLogix ERP</h1>
+            <p style="color: #94a3b8; font-size: 14px; margin-top: 6px;">Enterprise Warehouse Management & Multi-Facility Fulfillment Platform</p>
         </div>
         """, unsafe_allow_html=True)
 
         st.markdown("""
         <div class="cred-box">
-            <strong style="color: #60a5fa; font-size: 14px;">🔑 Demo Login Credentials:</strong><br/>
+            <strong style="color: #60a5fa; font-size: 14px;">🔑 Portal Access Credentials:</strong><br/>
             <div style="margin-top: 8px;">
                 • <b>Administrator:</b> Username: <code style="color:#f8fafc">admin</code> | Password: <code style="color:#f8fafc">admin123</code><br/>
-                • <b>Staff Operator:</b> Username: <code style="color:#f8fafc">staff</code> | Password: <code style="color:#f8fafc">staff123</code>
+                • <b>Operations Lead:</b> Username: <code style="color:#f8fafc">staff</code> | Password: <code style="color:#f8fafc">staff123</code>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
-        # 1-Click Quick Demo Buttons
-        st.markdown("<p style='font-size:12px; color:#94a3b8; font-weight:600; margin-bottom:8px;'>⚡ QUICK 1-CLICK DEMO ACCESS:</p>", unsafe_allow_html=True)
+        st.markdown("<p style='font-size:12px; color:#94a3b8; font-weight:600; margin-bottom:8px;'>⚡ 1-CLICK DEMO ACCESS:</p>", unsafe_allow_html=True)
         col_btn1, col_btn2 = st.columns(2)
         with col_btn1:
-            if st.button("🚀 Sign In as Admin", use_container_width=True):
+            if st.button("🚀 Sign In as Administrator", use_container_width=True):
                 st.session_state.logged_in = True
                 st.session_state.current_user = USERS_DATABASE["admin"]
                 st.session_state.username = "admin"
                 st.rerun()
         with col_btn2:
-            if st.button("👷 Sign In as Staff", use_container_width=True):
+            if st.button("👷 Sign In as Operations Lead", use_container_width=True):
                 st.session_state.logged_in = True
                 st.session_state.current_user = USERS_DATABASE["staff"]
                 st.session_state.username = "staff"
                 st.rerun()
 
-        st.markdown("<div style='margin: 18px 0; border-top: 1px solid #334155; text-align: center;'><span style='position: relative; top: -10px; background: #0b0f19; padding: 0 10px; color: #64748b; font-size: 11px;'>OR LOG IN MANUALLY</span></div>", unsafe_allow_html=True)
+        st.markdown("<div style='margin: 18px 0; border-top: 1px solid #334155; text-align: center;'><span style='position: relative; top: -10px; background: #0b0f19; padding: 0 10px; color: #64748b; font-size: 11px;'>OR ENTER CREDENTIALS MANUALLY</span></div>", unsafe_allow_html=True)
 
         with st.form("manual_login_form"):
-            username_input = st.text_input("Username", placeholder="e.g. admin or staff").strip().lower()
-            password_input = st.text_input("Password", type="password", placeholder="Enter your password")
-            submit_login = st.form_submit_button("Sign In to Portal", type="primary", use_container_width=True)
+            username_input = st.text_input("Enterprise ID / Username", placeholder="e.g. admin or staff").strip().lower()
+            password_input = st.text_input("Password", type="password", placeholder="Enter secure password")
+            submit_login = st.form_submit_button("Sign In to ERP Portal", type="primary", use_container_width=True)
 
             if submit_login:
                 if username_input in USERS_DATABASE and USERS_DATABASE[username_input]["password"] == password_input:
                     st.session_state.logged_in = True
                     st.session_state.current_user = USERS_DATABASE[username_input]
                     st.session_state.username = username_input
-                    st.success(f"Welcome, {USERS_DATABASE[username_input]['name']}!")
+                    st.success(f"Access Authorized: {USERS_DATABASE[username_input]['name']}")
                     st.rerun()
                 else:
-                    st.error("Invalid credentials. Please click the Quick Demo buttons above or check username and password.")
+                    st.error("Invalid credentials. Please click the 1-Click Demo buttons above or check username and password.")
         
         st.stop()
 
-# ================= AUTHENTICATED DASHBOARD =================
+# ================= AUTHENTICATED PORTAL =================
 
-# Sidebar: User Profile & Navigation
 with st.sidebar:
     st.image("https://img.icons8.com/color/96/000000/warehouse-outloading.png", width=52)
     st.markdown(f"### {st.session_state.current_user['name']}")
@@ -198,11 +236,11 @@ with st.sidebar:
         st.rerun()
 
     st.divider()
-    nav = st.radio("Navigation Menu:", [
-        "📊 Operations Dashboard",
-        "📦 Stock Master & Real-time Allocation",
+    nav = st.radio("Enterprise Navigation:", [
+        "📊 Operations Command Center",
+        "📦 Stock Master & Real-Time Allocation",
         "⚡ Order Fulfillment Pipeline",
-        "🛒 Purchasing & Goods Receipt (GRN)",
+        "🛒 Procurement & Goods Receipt (GRN)",
         "📜 System Audit Trail"
     ])
 
@@ -213,12 +251,12 @@ st.markdown(f"""
 <div class="main-header">
     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
         <div>
-            <h2 style="margin:0; font-size:24px; font-weight:800; letter-spacing:-0.5px;">Smart Warehouse & Order Fulfillment ERP</h2>
-            <p style="margin:4px 0 0; color:#94a3b8; font-size:13px;">Real-Time Stock Reservation • Stage-Gate Fulfillment • Dynamic Runout Forecasting</p>
+            <h2 style="margin:0; font-size:24px; font-weight:800; letter-spacing:-0.5px;">OmniLogix Warehouse &amp; Fulfillment Platform</h2>
+            <p style="margin:4px 0 0; color:#94a3b8; font-size:13px;">Enterprise Distribution Logistics • Dynamic Stock Locking • Precision Picking Protocols</p>
         </div>
         <div style="display:flex; align-items:center; gap:10px;">
             <span style="background:rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #93c5fd; padding:6px 14px; border-radius:6px; font-weight:700; font-size:12px;">
-                ACTIVE: {st.session_state.current_user['role'].upper()}
+                SESSION: {st.session_state.current_user['role'].upper()}
             </span>
         </div>
     </div>
@@ -226,8 +264,8 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # ----------------- VIEW 1: DASHBOARD & WAREHOUSE BINS -----------------
-if nav == "📊 Operations Dashboard":
-    st.subheader("Warehouse Operations Overview")
+if nav == "📊 Operations Command Center":
+    st.subheader("Global Logistics & Fulfillment Telemetry")
     
     total_physical = sum(p["current_stock"] for p in st.session_state.products)
     total_reserved = sum(p["reserved_stock"] for p in st.session_state.products)
@@ -236,42 +274,45 @@ if nav == "📊 Operations Dashboard":
     active_orders = sum(1 for o in st.session_state.orders if o["status"] != "Delivered")
 
     c1, c2, c3, c4, c5 = st.columns(5)
-    c1.metric("Active SKUs", len(st.session_state.products), "3 Facilities")
-    c2.metric("Free Available Stock", f"{free_available:,} Units", "Ready for Allocation")
-    c3.metric("Reserved Stock", f"{total_reserved:,} Units", "Locked in Pipeline")
-    c4.metric("Active Pipeline Orders", active_orders, "In Fulfillment")
-    c5.metric("Low Stock Warnings", low_stock_count, "Safety Alert", delta_color="inverse")
+    c1.metric("Active Catalog SKUs", len(st.session_state.products), "3 Facilities")
+    c2.metric("Available Free Stock", f"{free_available:,} Units", "Ready for Allocation")
+    c3.metric("Allocated / Reserved", f"{total_reserved:,} Units", "Locked in Pipeline")
+    c4.metric("Active Sales Orders", active_orders, "In Fulfillment")
+    c5.metric("Replenishment Alerts", low_stock_count, "Safety Buffer Breach", delta_color="inverse")
 
     st.divider()
 
-    # Visual Layout Map
-    st.subheader("Physical Warehouse Layout & Storage Bins")
-    st.caption("Zone matrix, aisle routing, and storage slot utilization across active distribution facilities")
+    st.subheader("Physical Logistics Layout & Tiered Storage Bins")
+    st.caption("Distribution topology, high-density zoning, and aisle storage coordinates across strategic distribution nodes")
 
     b1, b2, b3, b4 = st.columns(4)
     with b1:
-        st.info("**Zone A — Server & Switching**\nAisle 1 - 4 • High Security\n- Bin 02: Core Switch (12 Free)\n- Bin 09: DDR5 RAM (35 Free)\n- Bin 14: Micro-Servers (20 Free)")
+        st.info("**Zone A — High-Performance Compute & Switching**\nAisles 01 - 04 • High Security\n- Bay C / Tier 04: PowerEdge R760 (18 Free)\n- Bay A / Tier 02: Catalyst 9300 Switches (24 Free)\n- Bay A / Tier 05: Samsung DDR5 ECC Modules (47 Free)")
     with b2:
-        st.warning("**Zone B — Solid State Storage**\nAisle 1 - 2 • Static-Safe\n- Bin 08: NVMe SSD (6 Free ⚠️)\n- Bin 12: Empty Slot Available\n- Bin 16: Empty Slot Available")
+        st.warning("**Zone B — Solid-State Enterprise Storage**\nAisles 01 - 02 • Static-Dissipative\n- Bay D / Tier 03: Micron NVMe 7.68TB (8 Free ⚠️)\n- Bay B / Tier 02: Unallocated Slot\n- Bay B / Tier 04: Unallocated Slot")
     with b3:
-        st.success("**Zone C — Mobile Hardware**\nAisle 1 - 3 • High Velocity\n- Bin 05: Barcode Scanners (33 Free)\n- Bin 10: Empty Slot Available\n- Bin 11: Empty Slot Available")
+        st.success("**Zone C — Logistics & Mobile Terminals**\nAisles 01 - 03 • Fast-Pick Bins\n- Bay B / Tier 01: Zebra TC58 Barcode Scanners (40 Free)\n- Bay C / Tier 02: Unallocated Slot\n- Bay C / Tier 03: Unallocated Slot")
     with b4:
-        st.error("**Zone Heavy — Power & UPS**\nFloor Bays • Pallet Racks\n- Pallet 01: Rack UPS (5 Free ⚠️)\n- Pallet 02: Empty Bay Available\n- Pallet 03: Empty Bay Available")
+        st.error("**Heavy Pallet Staging — Critical Power Backup**\nGround Bays • High-Load Structural Racks\n- Pallet 01: Schneider APC 10kVA UPS (5 Free ⚠️)\n- Pallet 02: Empty Staging Bay\n- Pallet 03: Empty Staging Bay")
 
 # ----------------- VIEW 2: INVENTORY & STOCK CHECKING -----------------
-elif nav == "📦 Stock Master & Real-time Allocation":
-    st.subheader("Inventory Stock Master & Sales-Velocity Runout Forecasting")
+elif nav == "📦 Stock Master & Real-Time Allocation":
+    st.subheader("Global Inventory Ledger & Sales-Velocity Runout Forecasting")
 
-    # Interactive Search & Filter
     f_col1, f_col2 = st.columns([2, 1])
-    search_q = f_col1.text_input("🔍 Search Inventory by SKU, Name, or Location", "").lower()
-    selected_wh = f_col2.selectbox("Filter Facility", ["All Facilities", "Central Hub (MIHAN)", "West Coast Depot", "Pune Logistics Spoke"])
+    search_q = f_col1.text_input("🔍 Search Inventory by SKU, Specification, or Warehouse Bay", "").lower()
+    selected_wh = f_col2.selectbox("Filter Distribution Facility", [
+        "All Regional Hubs",
+        "Nagpur Regional Fulfillment Hub (MIHAN Logistics Corridor)",
+        "Mumbai Port Distribution Gateway (Bhiwandi Hub)",
+        "Pune Technology Logistics Park (Chakan MIDC)"
+    ])
 
     df_inv = []
     for p in st.session_state.products:
         if search_q and not (search_q in p["name"].lower() or search_q in p["sku"].lower() or search_q in p["location"].lower()):
             continue
-        if selected_wh != "All Facilities" and p["warehouse"] != selected_wh:
+        if selected_wh != "All Regional Hubs" and p["warehouse"] != selected_wh:
             continue
 
         avail = p["current_stock"] - p["reserved_stock"]
@@ -280,46 +321,56 @@ elif nav == "📦 Stock Master & Real-time Allocation":
         
         df_inv.append({
             "SKU": p["sku"],
-            "Product Name": p["name"],
+            "Item Specification & Model": p["name"],
             "Category": p["category"],
-            "Facility / Bin": f"{p['warehouse']} - {p['location']}",
-            "Unit Price (₹)": f"₹{p['unit_price']:,}",
-            "Physical": p["current_stock"],
-            "Reserved": p["reserved_stock"],
-            "Free Available": avail,
+            "Facility & Storage Bay": f"{p['warehouse'].split('(')[0].strip()} • {p['location']}",
+            "Unit List Price (₹)": f"₹{p['unit_price']:,}",
+            "On-Hand": p["current_stock"],
+            "Allocated": p["reserved_stock"],
+            "Free Stock": avail,
             "Runout Est.": f"{runout_days} days",
-            "Health": status
+            "Inventory Health": status
         })
 
     st.dataframe(pd.DataFrame(df_inv), use_container_width=True)
 
-    # Export to CSV Button
     if df_inv:
         csv_data = pd.DataFrame(df_inv).to_csv(index=False).encode('utf-8')
-        st.download_button("📥 Export Inventory CSV", data=csv_data, file_name="warehouse_inventory.csv", mime="text/csv")
+        st.download_button("📥 Export Global Stock Ledger (CSV)", data=csv_data, file_name="omnilogix_inventory_ledger.csv", mime="text/csv")
 
     st.divider()
-    st.subheader("Create Customer Order (With Stock Checking & Real-Time Stock Reservation)")
+    st.subheader("Create Customer Sales Order (With Stock Checking & Real-Time Stock Reservation)")
     
     with st.form("new_order_form"):
         col_c, col_wh = st.columns(2)
-        cust_name = col_c.text_input("Customer Organization", value="Apex Technologies Hub")
-        wh_select = col_wh.selectbox("Fulfillment Facility", ["Central Hub (MIHAN)", "West Coast Depot", "Pune Logistics Spoke"])
+        cust_name = col_c.selectbox("Select Enterprise Client", [
+            "Persistent Systems Global Delivery Center",
+            "Tata Consultancy Services (TCS) Cloud Infrastructure Division",
+            "Infosys Data Center Operations Group",
+            "Wipro Technologies Enterprise Networks Unit",
+            "LTIMindtree Digital Infrastructure Group",
+            "Tech Mahindra Cloud & Compute Services"
+        ])
+        wh_select = col_wh.selectbox("Fulfillment Facility", [
+            "Nagpur Regional Fulfillment Hub (MIHAN Logistics Corridor)",
+            "Mumbai Port Distribution Gateway (Bhiwandi Hub)",
+            "Pune Technology Logistics Park (Chakan MIDC)"
+        ])
 
         prod_options = {f"{p['name']} ({p['sku']}) - Available: {p['current_stock'] - p['reserved_stock']}": p for p in st.session_state.products}
-        selected_label = st.selectbox("Select Product", list(prod_options.keys()))
+        selected_label = st.selectbox("Product Line Item", list(prod_options.keys()))
         selected_prod = prod_options[selected_label]
 
-        order_qty = st.number_input("Order Quantity", min_value=1, max_value=50, value=2)
-        submitted = st.form_submit_button("Check Stock & Reserve Order", type="primary")
+        order_qty = st.number_input("Order Quantity (Units)", min_value=1, max_value=50, value=2)
+        submitted = st.form_submit_button("Verify Stock & Lock Allocation", type="primary")
 
         if submitted:
             free_avail = selected_prod["current_stock"] - selected_prod["reserved_stock"]
             if order_qty > free_avail:
-                st.error(f"❌ Stock Check Failed! Requested {order_qty} units, but only {free_avail} are currently available for allocation.")
+                st.error(f"❌ Allocation Denied: Requested {order_qty} units, but only {free_avail} are currently unallocated.")
             else:
                 selected_prod["reserved_stock"] += order_qty
-                order_id = f"ORD-2026-{1050 + len(st.session_state.orders) + 1}"
+                order_id = f"SO-2026-{9040 + len(st.session_state.orders) + 1}"
                 total_val = order_qty * selected_prod["unit_price"]
 
                 st.session_state.orders.insert(0, {
@@ -338,9 +389,9 @@ elif nav == "📦 Stock Master & Real-time Allocation":
                     "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
                     "user": st.session_state.current_user["name"],
                     "action": "Stock Reserved",
-                    "details": f"Order {order_id} created for {cust_name}. Reserved {order_qty}x {selected_prod['sku']}. Available drops to {selected_prod['current_stock'] - selected_prod['reserved_stock']}."
+                    "details": f"Sales Order {order_id} generated for {cust_name}. Reserved {order_qty}x {selected_prod['sku']}. Available unreserved balance: {selected_prod['current_stock'] - selected_prod['reserved_stock']}."
                 })
-                st.success(f"✓ Stock Reserved Successfully! Order {order_id} has locked {order_qty} unit(s) into the fulfillment pipeline.")
+                st.success(f"✓ Inventory Locked: Sales Order {order_id} confirmed. {order_qty} units assigned to fulfillment staging.")
                 st.rerun()
 
 # ----------------- VIEW 3: ORDER FULFILLMENT PIPELINE -----------------
@@ -358,9 +409,9 @@ elif nav == "⚡ Order Fulfillment Pipeline":
             
             for o in orders_in_stage:
                 with st.expander(f"{o['id']} - ₹{o['total']:,}"):
-                    st.write(f"**Customer:** {o['customer']}")
+                    st.write(f"**Client:** {o['customer']}")
                     st.write(f"**Item:** {o['qty']}x {o['sku']}")
-                    st.write(f"**Warehouse:** {o['warehouse']}")
+                    st.write(f"**Facility:** {o['warehouse'].split('(')[0]}")
                     if o["tracking"] != "TRK-PENDING":
                         st.write(f"**Tracking:** `{o['tracking']}`")
 
@@ -375,7 +426,7 @@ elif nav == "⚡ Order Fulfillment Pipeline":
                     elif stage == "Packing":
                         if st.button("Dispatch Package", key=f"btn_{o['id']}"):
                             o["status"] = "Dispatched"
-                            o["tracking"] = f"EXP-DEL-{datetime.datetime.now().strftime('%S%M%H')}"
+                            o["tracking"] = f"DHL-EXP-{datetime.datetime.now().strftime('%S%M%H')}"
                             for p in st.session_state.products:
                                 if p["sku"] == o["sku"]:
                                     p["current_stock"] -= o["qty"]
@@ -384,29 +435,29 @@ elif nav == "⚡ Order Fulfillment Pipeline":
                                 "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
                                 "user": st.session_state.current_user["name"],
                                 "action": "Order Dispatched",
-                                "details": f"Physical stock deducted for {o['id']}. Tracking {o['tracking']} created."
+                                "details": f"Physical inventory deducted for {o['id']}. Waybill {o['tracking']} generated."
                             })
                             st.rerun()
                     elif stage == "Dispatched":
-                        if st.button("Mark Delivered", key=f"btn_{o['id']}"):
+                        if st.button("Confirm Delivery", key=f"btn_{o['id']}"):
                             o["status"] = "Delivered"
                             st.rerun()
 
 # ----------------- VIEW 4: PURCHASING & GRN -----------------
-elif nav == "🛒 Purchasing & Goods Receipt (GRN)":
-    st.subheader("Purchase Orders & Goods Receipt Notes (GRN)")
+elif nav == "🛒 Procurement & Goods Receipt (GRN)":
+    st.subheader("Inbound Supplier Purchase Orders & Goods Receipt Notes (GRN)")
 
     po_data = []
     for po in st.session_state.purchase_orders:
         po_data.append({
-            "PO Number": po["id"],
-            "Supplier": po["supplier"],
-            "Item SKU": po["sku"],
+            "PO Reference": po["id"],
+            "OEM / Supplier": po["supplier"],
+            "Product SKU": po["sku"],
             "Quantity": po["qty"],
-            "Total (₹)": f"₹{po['total']:,}",
-            "Destination Hub": po["warehouse"],
-            "Status": po["status"],
-            "GRN Number": po["grn"]
+            "Total Value (₹)": f"₹{po['total']:,}",
+            "Destination Hub": po["warehouse"].split('(')[0],
+            "PO Status": po["status"],
+            "GRN Inspection": po["grn"]
         })
 
     st.dataframe(pd.DataFrame(po_data), use_container_width=True)
@@ -418,10 +469,10 @@ elif nav == "🛒 Purchasing & Goods Receipt (GRN)":
         st.subheader("Process Goods Receipt Note (GRN)")
         transit_pos = [po for po in st.session_state.purchase_orders if po["status"] == "In Transit"]
         if not transit_pos:
-            st.info("No purchase orders currently in transit.")
+            st.info("All issued purchase orders have been verified and received.")
         else:
-            po_to_receive = st.selectbox("Select PO to Receive", [po["id"] for po in transit_pos])
-            if st.button("Receive Goods & Credit Inventory", type="primary"):
+            po_to_receive = st.selectbox("Select Pending Shipment to Verify", [po["id"] for po in transit_pos])
+            if st.button("Verify Inbound Shipment & Credit Inventory", type="primary"):
                 target_po = next(p for p in st.session_state.purchase_orders if p["id"] == po_to_receive)
                 target_po["status"] = "Received"
                 grn_no = f"GRN-2026-00{datetime.datetime.now().strftime('%M%S')}"
@@ -435,23 +486,34 @@ elif nav == "🛒 Purchasing & Goods Receipt (GRN)":
                     "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
                     "user": st.session_state.current_user["name"],
                     "action": "GRN Processed",
-                    "details": f"{grn_no} generated for {target_po['id']}. +{target_po['qty']}x {target_po['sku']} added to stock."
+                    "details": f"{grn_no} confirmed for {target_po['id']}. +{target_po['qty']}x {target_po['sku']} credited to {target_po['warehouse']}."
                 })
-                st.success(f"✓ {grn_no} generated! Stock has been credited to {target_po['warehouse']}.")
+                st.success(f"✓ Inbound Shipment Verified: {grn_no} logged. Inventory ledger updated.")
                 st.rerun()
 
     with col_new_po:
-        st.subheader("Raise New Purchase Order")
+        st.subheader("Issue Inbound OEM Purchase Order")
         if not is_admin:
-            st.warning("🔒 Only Administrator accounts have permission to issue new Purchase Orders to suppliers.")
+            st.warning("🔒 Restricted Action: Procurement PO issuance requires Global Administrator privileges.")
         else:
             with st.form("raise_po_form"):
-                supp_name = st.selectbox("Supplier", ["Apex Semiconductor Corp", "SysTech Network Hardware Ltd", "VoltMaster Power Solutions"])
-                po_sku = st.selectbox("Product SKU", [p["sku"] for p in st.session_state.products])
-                po_qty = st.number_input("Quantity to Order", min_value=5, max_value=200, value=20)
-                po_wh = st.selectbox("Destination Warehouse", ["Central Hub (MIHAN)", "West Coast Depot", "Pune Logistics Spoke"])
+                supp_name = st.selectbox("Authorized OEM Supplier", [
+                    "Dell Technologies Direct Enterprise Supply",
+                    "Cisco Systems Direct OEM Wholesale",
+                    "Micron Semiconductor Industrial Solutions",
+                    "Schneider Electric APC OEM Distribution",
+                    "Samsung Semiconductor Solutions Global",
+                    "Zebra Technologies Enterprise Supply"
+                ])
+                po_sku = st.selectbox("Product Line Item SKU", [p["sku"] for p in st.session_state.products])
+                po_qty = st.number_input("Replenishment Volume (Units)", min_value=5, max_value=200, value=25)
+                po_wh = st.selectbox("Consignee Hub", [
+                    "Nagpur Regional Fulfillment Hub (MIHAN Logistics Corridor)",
+                    "Mumbai Port Distribution Gateway (Bhiwandi Hub)",
+                    "Pune Technology Logistics Park (Chakan MIDC)"
+                ])
                 
-                if st.form_submit_button("Transmit PO to Supplier"):
+                if st.form_submit_button("Transmit Purchase Order"):
                     matched_prod = next(p for p in st.session_state.products if p["sku"] == po_sku)
                     new_po_id = f"PO-2026-{100 + len(st.session_state.purchase_orders) + 1}"
                     total_cost = po_qty * matched_prod["cost_price"]
@@ -463,14 +525,14 @@ elif nav == "🛒 Purchasing & Goods Receipt (GRN)":
                         "qty": po_qty,
                         "total": total_cost,
                         "status": "In Transit",
-                        "grn": "Pending Receipt",
+                        "grn": "Pending Inbound Inspection",
                         "warehouse": po_wh,
                         "date": datetime.datetime.now().strftime("%Y-%m-%d")
                     })
-                    st.success(f"✓ Purchase Order {new_po_id} issued to {supp_name} for ₹{total_cost:,}!")
+                    st.success(f"✓ Purchase Order {new_po_id} transmitted to {supp_name} for ₹{total_cost:,}!")
                     st.rerun()
 
 # ----------------- VIEW 5: AUDIT TRAIL -----------------
 elif nav == "📜 System Audit Trail":
-    st.subheader("Tamper-Evident Stock Movement Audit Trail")
+    st.subheader("Enterprise Stock Movement & Custody Ledger")
     st.dataframe(pd.DataFrame(st.session_state.audit_logs), use_container_width=True)
