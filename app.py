@@ -1,5 +1,5 @@
 """
-Smart Warehouse & Order Fulfillment ERP System
+Smart Warehouse & Order Fulfillment ERP Platform
 Enterprise Cloud & Localhost Streamlit Application
 """
 
@@ -15,27 +15,62 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ----------------- CUSTOM CSS -----------------
+# ----------------- MODERN ENTERPRISE DESIGN CSS -----------------
 st.markdown("""
 <style>
+    /* Global Styles */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    
+    html, body, [class*="css"] {
+        font-family: 'Inter', -apple-system, sans-serif;
+    }
+
     .main-header {
-        background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
-        padding: 20px 24px;
-        border-radius: 10px;
+        background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+        padding: 24px 28px;
+        border-radius: 12px;
         color: white;
         border: 1px solid #334155;
-        margin-bottom: 20px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+        margin-bottom: 24px;
     }
+    
     .cred-box {
         background-color: #0f172a;
-        padding: 14px 18px;
+        padding: 16px 20px;
         border-radius: 8px;
-        border-left: 4px solid #3b82f6;
-        font-family: monospace;
+        border: 1px solid #334155;
+        border-left: 5px solid #3b82f6;
+        font-family: 'JetBrains Mono', monospace;
         font-size: 13px;
         color: #93c5fd;
-        margin-bottom: 18px;
-        line-height: 1.6;
+        margin-bottom: 20px;
+        line-height: 1.7;
+    }
+
+    .stat-badge {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .badge-optimal { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-warning { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-danger { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    
+    .quick-cred-btn {
+        background: #1e293b;
+        color: #e2e8f0;
+        border: 1px solid #475569;
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 12px;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.2s;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -73,16 +108,16 @@ if "products" not in st.session_state:
 
 if "orders" not in st.session_state:
     st.session_state.orders = [
-        {"id": "ORD-2026-1049", "customer": "Persistent Systems Enterprise Center", "sku": "SKU-SRV-901", "qty": 2, "total": 170000, "status": "Picking", "warehouse": "Central Hub (MIHAN)", "tracking": "TRK-PENDING"},
-        {"id": "ORD-2026-1050", "customer": "Tata Consultancy Services SEZ", "sku": "SKU-SWT-408", "qty": 3, "total": 126000, "status": "Packing", "warehouse": "Central Hub (MIHAN)", "tracking": "TRK-PENDING"},
-        {"id": "ORD-2026-1051", "customer": "Infosys Cyber City Campus", "sku": "SKU-SSD-204", "qty": 5, "total": 142500, "status": "Dispatched", "warehouse": "West Coast Depot", "tracking": "EXP-DEL-992140"},
-        {"id": "ORD-2026-1052", "customer": "Wipro Technologies Circle", "sku": "SKU-SCN-101", "qty": 4, "total": 66000, "status": "Delivered", "warehouse": "Pune Logistics Spoke", "tracking": "BLUE-DART-554109"}
+        {"id": "ORD-2026-1049", "customer": "Persistent Systems Enterprise Center", "sku": "SKU-SRV-901", "qty": 2, "total": 170000, "status": "Picking", "warehouse": "Central Hub (MIHAN)", "tracking": "TRK-PENDING", "created_at": "2026-11-15 10:30"},
+        {"id": "ORD-2026-1050", "customer": "Tata Consultancy Services SEZ", "sku": "SKU-SWT-408", "qty": 3, "total": 126000, "status": "Packing", "warehouse": "Central Hub (MIHAN)", "tracking": "TRK-PENDING", "created_at": "2026-11-15 11:45"},
+        {"id": "ORD-2026-1051", "customer": "Infosys Cyber City Campus", "sku": "SKU-SSD-204", "qty": 5, "total": 142500, "status": "Dispatched", "warehouse": "West Coast Depot", "tracking": "EXP-DEL-992140", "created_at": "2026-11-14 16:10"},
+        {"id": "ORD-2026-1052", "customer": "Wipro Technologies Circle", "sku": "SKU-SCN-101", "qty": 4, "total": 66000, "status": "Delivered", "warehouse": "Pune Logistics Spoke", "tracking": "BLUE-DART-554109", "created_at": "2026-11-13 09:20"}
     ]
 
 if "purchase_orders" not in st.session_state:
     st.session_state.purchase_orders = [
-        {"id": "PO-2026-081", "supplier": "Apex Semiconductor Corp", "sku": "SKU-SSD-204", "qty": 30, "total": 630000, "status": "Received", "grn": "GRN-2026-0042", "warehouse": "West Coast Depot"},
-        {"id": "PO-2026-094", "supplier": "SysTech Network Hardware Ltd", "sku": "SKU-SWT-408", "qty": 20, "total": 620000, "status": "In Transit", "grn": "Pending Receipt", "warehouse": "Central Hub (MIHAN)"}
+        {"id": "PO-2026-081", "supplier": "Apex Semiconductor Corp", "sku": "SKU-SSD-204", "qty": 30, "total": 630000, "status": "Received", "grn": "GRN-2026-0042", "warehouse": "West Coast Depot", "date": "2026-11-10"},
+        {"id": "PO-2026-094", "supplier": "SysTech Network Hardware Ltd", "sku": "SKU-SWT-408", "qty": 20, "total": 620000, "status": "In Transit", "grn": "Pending Receipt", "warehouse": "Central Hub (MIHAN)", "date": "2026-11-12"}
     ]
 
 if "audit_logs" not in st.session_state:
@@ -97,22 +132,42 @@ if not st.session_state.logged_in:
     col_center = st.columns([1, 2, 1])[1]
     with col_center:
         st.markdown("""
-        <div style="text-align: center; margin-top: 40px; margin-bottom: 24px;">
-            <div style="font-size: 48px;">📦</div>
-            <h1 style="margin: 0; font-size: 28px;">Smart Warehouse ERP</h1>
-            <p style="color: #94a3b8; font-size: 14px;">Enterprise Order Fulfillment & Inventory Control System</p>
+        <div style="text-align: center; margin-top: 35px; margin-bottom: 24px;">
+            <div style="font-size: 50px; margin-bottom: 8px;">📦</div>
+            <h1 style="margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.5px;">Smart Warehouse ERP</h1>
+            <p style="color: #94a3b8; font-size: 14px; margin-top: 6px;">Enterprise Order Fulfillment & Multi-Warehouse Control System</p>
         </div>
         """, unsafe_allow_html=True)
 
         st.markdown("""
         <div class="cred-box">
-            <strong>🔑 Demo Login Credentials:</strong><br/>
-            • <b>Administrator:</b> Username: <code>admin</code> | Password: <code>admin123</code><br/>
-            • <b>Staff Operator:</b> Username: <code>staff</code> | Password: <code>staff123</code>
+            <strong style="color: #60a5fa; font-size: 14px;">🔑 Demo Login Credentials:</strong><br/>
+            <div style="margin-top: 8px;">
+                • <b>Administrator:</b> Username: <code style="color:#f8fafc">admin</code> | Password: <code style="color:#f8fafc">admin123</code><br/>
+                • <b>Staff Operator:</b> Username: <code style="color:#f8fafc">staff</code> | Password: <code style="color:#f8fafc">staff123</code>
+            </div>
         </div>
         """, unsafe_allow_html=True)
 
-        with st.form("login_form"):
+        # 1-Click Quick Demo Buttons
+        st.markdown("<p style='font-size:12px; color:#94a3b8; font-weight:600; margin-bottom:8px;'>⚡ QUICK 1-CLICK DEMO ACCESS:</p>", unsafe_allow_html=True)
+        col_btn1, col_btn2 = st.columns(2)
+        with col_btn1:
+            if st.button("🚀 Sign In as Admin", use_container_width=True):
+                st.session_state.logged_in = True
+                st.session_state.current_user = USERS_DATABASE["admin"]
+                st.session_state.username = "admin"
+                st.rerun()
+        with col_btn2:
+            if st.button("👷 Sign In as Staff", use_container_width=True):
+                st.session_state.logged_in = True
+                st.session_state.current_user = USERS_DATABASE["staff"]
+                st.session_state.username = "staff"
+                st.rerun()
+
+        st.markdown("<div style='margin: 18px 0; border-top: 1px solid #334155; text-align: center;'><span style='position: relative; top: -10px; background: #0b0f19; padding: 0 10px; color: #64748b; font-size: 11px;'>OR LOG IN MANUALLY</span></div>", unsafe_allow_html=True)
+
+        with st.form("manual_login_form"):
             username_input = st.text_input("Username", placeholder="e.g. admin or staff").strip().lower()
             password_input = st.text_input("Password", type="password", placeholder="Enter your password")
             submit_login = st.form_submit_button("Sign In to Portal", type="primary", use_container_width=True)
@@ -122,10 +177,10 @@ if not st.session_state.logged_in:
                     st.session_state.logged_in = True
                     st.session_state.current_user = USERS_DATABASE[username_input]
                     st.session_state.username = username_input
-                    st.success(f"Welcome back, {USERS_DATABASE[username_input]['name']}!")
+                    st.success(f"Welcome, {USERS_DATABASE[username_input]['name']}!")
                     st.rerun()
                 else:
-                    st.error("Invalid username or password. Please use the credentials shown above.")
+                    st.error("Invalid credentials. Please click the Quick Demo buttons above or check username and password.")
         
         st.stop()
 
@@ -133,43 +188,45 @@ if not st.session_state.logged_in:
 
 # Sidebar: User Profile & Navigation
 with st.sidebar:
-    st.image("https://img.icons8.com/color/96/000000/warehouse-outloading.png", width=56)
+    st.image("https://img.icons8.com/color/96/000000/warehouse-outloading.png", width=52)
     st.markdown(f"### {st.session_state.current_user['name']}")
     st.caption(f"Role: **{st.session_state.current_user['role']}** • `{st.session_state.current_user['badge']}`")
 
-    if st.button("🚪 Log Out", use_container_width=True):
+    if st.button("🚪 Sign Out", use_container_width=True):
         st.session_state.logged_in = False
         st.session_state.current_user = None
         st.rerun()
 
     st.divider()
     nav = st.radio("Navigation Menu:", [
-        "📊 Dashboard & Warehouse Layout",
-        "📦 Inventory & Stock Checking",
+        "📊 Operations Dashboard",
+        "📦 Stock Master & Real-time Allocation",
         "⚡ Order Fulfillment Pipeline",
         "🛒 Purchasing & Goods Receipt (GRN)",
-        "📜 Stock Movement Audit Trail"
+        "📜 System Audit Trail"
     ])
 
 is_admin = (st.session_state.current_user["role"] == "Administrator")
 
-# Main Page Banner
+# Main Header Banner
 st.markdown(f"""
 <div class="main-header">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
         <div>
-            <h2 style="margin:0; font-size:24px;">Smart Warehouse & Order Fulfillment ERP</h2>
-            <p style="margin:4px 0 0; color:#94a3b8; font-size:14px;">Multi-Warehouse Management • Real-Time Stock Reservation • Stage-Gate Fulfillment</p>
+            <h2 style="margin:0; font-size:24px; font-weight:800; letter-spacing:-0.5px;">Smart Warehouse & Order Fulfillment ERP</h2>
+            <p style="margin:4px 0 0; color:#94a3b8; font-size:13px;">Real-Time Stock Reservation • Stage-Gate Fulfillment • Dynamic Runout Forecasting</p>
         </div>
-        <div style="text-align:right;">
-            <span style="background:#2563eb; padding:6px 14px; border-radius:6px; font-weight:700; font-size:12px;">{st.session_state.current_user['role'].upper()} ACTIVE</span>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <span style="background:rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #93c5fd; padding:6px 14px; border-radius:6px; font-weight:700; font-size:12px;">
+                ACTIVE: {st.session_state.current_user['role'].upper()}
+            </span>
         </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
 
 # ----------------- VIEW 1: DASHBOARD & WAREHOUSE BINS -----------------
-if nav == "📊 Dashboard & Warehouse Layout":
+if nav == "📊 Operations Dashboard":
     st.subheader("Warehouse Operations Overview")
     
     total_physical = sum(p["current_stock"] for p in st.session_state.products)
@@ -180,15 +237,16 @@ if nav == "📊 Dashboard & Warehouse Layout":
 
     c1, c2, c3, c4, c5 = st.columns(5)
     c1.metric("Active SKUs", len(st.session_state.products), "3 Facilities")
-    c2.metric("Free Stock", f"{free_available:,} Units", "Ready for Allocation")
+    c2.metric("Free Available Stock", f"{free_available:,} Units", "Ready for Allocation")
     c3.metric("Reserved Stock", f"{total_reserved:,} Units", "Locked in Pipeline")
-    c4.metric("Active Orders", active_orders, "In Fulfillment")
-    c5.metric("Low Stock Alerts", low_stock_count, "Safety Buffer", delta_color="inverse")
+    c4.metric("Active Pipeline Orders", active_orders, "In Fulfillment")
+    c5.metric("Low Stock Warnings", low_stock_count, "Safety Alert", delta_color="inverse")
 
     st.divider()
 
+    # Visual Layout Map
     st.subheader("Physical Warehouse Layout & Storage Bins")
-    st.caption("Zone matrix, aisle routing, and storage slot utilization")
+    st.caption("Zone matrix, aisle routing, and storage slot utilization across active distribution facilities")
 
     b1, b2, b3, b4 = st.columns(4)
     with b1:
@@ -201,35 +259,51 @@ if nav == "📊 Dashboard & Warehouse Layout":
         st.error("**Zone Heavy — Power & UPS**\nFloor Bays • Pallet Racks\n- Pallet 01: Rack UPS (5 Free ⚠️)\n- Pallet 02: Empty Bay Available\n- Pallet 03: Empty Bay Available")
 
 # ----------------- VIEW 2: INVENTORY & STOCK CHECKING -----------------
-elif nav == "📦 Inventory & Stock Checking":
+elif nav == "📦 Stock Master & Real-time Allocation":
     st.subheader("Inventory Stock Master & Sales-Velocity Runout Forecasting")
+
+    # Interactive Search & Filter
+    f_col1, f_col2 = st.columns([2, 1])
+    search_q = f_col1.text_input("🔍 Search Inventory by SKU, Name, or Location", "").lower()
+    selected_wh = f_col2.selectbox("Filter Facility", ["All Facilities", "Central Hub (MIHAN)", "West Coast Depot", "Pune Logistics Spoke"])
 
     df_inv = []
     for p in st.session_state.products:
+        if search_q and not (search_q in p["name"].lower() or search_q in p["sku"].lower() or search_q in p["location"].lower()):
+            continue
+        if selected_wh != "All Facilities" and p["warehouse"] != selected_wh:
+            continue
+
         avail = p["current_stock"] - p["reserved_stock"]
         runout_days = round(avail / p["daily_sales"], 1) if p["daily_sales"] > 0 else 999
         status = "CRITICAL REORDER" if runout_days < 5 else ("WARNING: Safety Stock Trigger" if avail <= p["safety_stock"] else "Optimal")
+        
         df_inv.append({
             "SKU": p["sku"],
             "Product Name": p["name"],
             "Category": p["category"],
-            "Location / Bin": p["location"],
+            "Facility / Bin": f"{p['warehouse']} - {p['location']}",
             "Unit Price (₹)": f"₹{p['unit_price']:,}",
-            "Physical Stock": p["current_stock"],
-            "Reserved Stock": p["reserved_stock"],
+            "Physical": p["current_stock"],
+            "Reserved": p["reserved_stock"],
             "Free Available": avail,
             "Runout Est.": f"{runout_days} days",
-            "Health Status": status
+            "Health": status
         })
 
     st.dataframe(pd.DataFrame(df_inv), use_container_width=True)
+
+    # Export to CSV Button
+    if df_inv:
+        csv_data = pd.DataFrame(df_inv).to_csv(index=False).encode('utf-8')
+        st.download_button("📥 Export Inventory CSV", data=csv_data, file_name="warehouse_inventory.csv", mime="text/csv")
 
     st.divider()
     st.subheader("Create Customer Order (With Stock Checking & Real-Time Stock Reservation)")
     
     with st.form("new_order_form"):
         col_c, col_wh = st.columns(2)
-        cust_name = col_c.text_input("Customer Name", value="Enterprise Procurement Dept")
+        cust_name = col_c.text_input("Customer Organization", value="Apex Technologies Hub")
         wh_select = col_wh.selectbox("Fulfillment Facility", ["Central Hub (MIHAN)", "West Coast Depot", "Pune Logistics Spoke"])
 
         prod_options = {f"{p['name']} ({p['sku']}) - Available: {p['current_stock'] - p['reserved_stock']}": p for p in st.session_state.products}
@@ -242,7 +316,7 @@ elif nav == "📦 Inventory & Stock Checking":
         if submitted:
             free_avail = selected_prod["current_stock"] - selected_prod["reserved_stock"]
             if order_qty > free_avail:
-                st.error(f"❌ Stock Check Failed! Requested {order_qty} units, but only {free_avail} are available for reservation.")
+                st.error(f"❌ Stock Check Failed! Requested {order_qty} units, but only {free_avail} are currently available for allocation.")
             else:
                 selected_prod["reserved_stock"] += order_qty
                 order_id = f"ORD-2026-{1050 + len(st.session_state.orders) + 1}"
@@ -256,7 +330,8 @@ elif nav == "📦 Inventory & Stock Checking":
                     "total": total_val,
                     "status": "Stock Reserved",
                     "warehouse": wh_select,
-                    "tracking": "TRK-PENDING"
+                    "tracking": "TRK-PENDING",
+                    "created_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
                 })
 
                 st.session_state.audit_logs.insert(0, {
@@ -389,12 +464,13 @@ elif nav == "🛒 Purchasing & Goods Receipt (GRN)":
                         "total": total_cost,
                         "status": "In Transit",
                         "grn": "Pending Receipt",
-                        "warehouse": po_wh
+                        "warehouse": po_wh,
+                        "date": datetime.datetime.now().strftime("%Y-%m-%d")
                     })
                     st.success(f"✓ Purchase Order {new_po_id} issued to {supp_name} for ₹{total_cost:,}!")
                     st.rerun()
 
 # ----------------- VIEW 5: AUDIT TRAIL -----------------
-elif nav == "📜 Stock Movement Audit Trail":
+elif nav == "📜 System Audit Trail":
     st.subheader("Tamper-Evident Stock Movement Audit Trail")
     st.dataframe(pd.DataFrame(st.session_state.audit_logs), use_container_width=True)
