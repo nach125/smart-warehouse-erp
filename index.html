@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Smart Warehouse &amp; Order Fulfillment ERP System — Ramdeobaba University CSE Core (Session 2026-2027) Semester V E-Commerce and ERP Project." />
+  <title>Smart Warehouse &amp; Order Fulfillment ERP System | Ramdeobaba University</title>
+  
+  <!-- Typography & Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ================= TOP ACADEMIC SYNOPSIS BANNER ================= -->
+  <aside class="synopsis-bar" aria-label="Ramdeobaba University Project Info">
+    <div class="container synopsis-bar-inner">
+      <div class="synopsis-meta">
+        <span>🏫 <strong>Ramdeobaba University</strong> (CSE CORE)</span>
+        <span class="dot">•</span>
+        <span>Session: <strong>2026–2027</strong> | Semester: <strong>V</strong></span>
+        <span class="dot">•</span>
+        <span>Course: <strong>E-commerce and ERP</strong></span>
+        <span class="dot">•</span>
+        <span>Coordinator: <strong>Kaushik R. Roy</strong></span>
+      </div>
+      <div class="synopsis-actions">
+        <button class="btn btn-outline btn-sm" onclick="openSynopsisModal()">
+          📄 View Project Synopsis &amp; Literature Review
+        </button>
+        <!-- Role Switcher -->
+        <div style="display:flex;align-items:center;gap:6px;background:rgba(0,0,0,0.3);padding:2px 8px;border-radius:4px;border:1px solid var(--border-color)">
+          <span style="font-size:11px;color:var(--text-muted)">Role:</span>
+          <button class="btn btn-sm btn-outline" style="padding:2px 6px;font-size:11px" onclick="switchRole('admin')">Admin</button>
+          <button class="btn btn-sm btn-outline" style="padding:2px 6px;font-size:11px" onclick="switchRole('staff')">Staff</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN ERP HEADER ================= -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="#" class="brand">
+        <div class="brand-logo">ERP</div>
+        <div class="brand-info">
+          <h1>Smart Warehouse ERP</h1>
+          <span>Order Fulfillment &amp; Stock Optimization Engine</span>
+        </div>
+      </a>
+
+      <!-- Navigation Tabs -->
+      <nav class="nav-tabs">
+        <button class="nav-tab active" id="tab-btn-dashboard" onclick="switchTab('dashboard')">
+          <span>📊</span> Dashboard
+        </button>
+        <button class="nav-tab" id="tab-btn-inventory" onclick="switchTab('inventory')">
+          <span>📦</span> Inventory &amp; Bins
+        </button>
+        <button class="nav-tab" id="tab-btn-fulfillment" onclick="switchTab('fulfillment')">
+          <span>⚡</span> Order Fulfillment
+        </button>
+        <button class="nav-tab" id="tab-btn-purchasing" onclick="switchTab('purchasing')">
+          <span>🛒</span> Purchasing &amp; GRN
+        </button>
+        <button class="nav-tab" id="tab-btn-audit" onclick="switchTab('audit')">
+          <span>📜</span> Audit Trail
+        </button>
+      </nav>
+
+      <!-- Active User Profile -->
+      <div class="user-profile">
+        <div class="role-badge">
+          <span class="role" id="current-user-role">ADMIN</span>
+          <span class="name" id="current-user-name">Nachiket Jagdale (A7-20)</span>
+        </div>
+        <div class="avatar" id="user-avatar">NJ</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN APPLICATION BODY ================= -->
+  <main class="container" style="padding-top: 24px; padding-bottom: 40px;">
+
+    <!-- ================= VIEW 1: DASHBOARD ================= -->
+    <div id="view-dashboard" class="tab-view">
+      
+      <!-- Top Actions Bar -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+        <div>
+          <h2 style="font-size:20px;font-weight:800;color:#fff">Warehouse Operations Overview</h2>
+          <p style="font-size:13px;color:var(--text-muted)">Real-time view of inventory levels, reservations, picker velocity, and shortage alerts.</p>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-outline" onclick="openSynopsisModal()">Research Gap &amp; Architecture</button>
+          <button class="btn btn-primary" onclick="openCreateOrderModal()">+ New Customer Order</button>
+        </div>
+      </div>
+
+      <!-- KPI Metrics Grid -->
+      <div class="kpi-grid">
+        <div class="kpi-card kpi-blue">
+          <div class="kpi-header">
+            <span class="kpi-title">Active SKUs</span>
+            <div class="kpi-icon" style="background:var(--primary-light);color:var(--primary)">📦</div>
+          </div>
+          <div class="kpi-val" id="kpi-total-skus">0</div>
+          <div class="kpi-sub">Across 3 regional hubs</div>
+        </div>
+
+        <div class="kpi-card kpi-green">
+          <div class="kpi-header">
+            <span class="kpi-title">Free Available Stock</span>
+            <div class="kpi-icon" style="background:var(--success-bg);color:var(--success)">✓</div>
+          </div>
+          <div class="kpi-val" id="kpi-available-units">0</div>
+          <div class="kpi-sub">Ready for customer reservation</div>
+        </div>
+
+        <div class="kpi-card kpi-orange">
+          <div class="kpi-header">
+            <span class="kpi-title">Reserved Stock</span>
+            <div class="kpi-icon" style="background:var(--warning-bg);color:var(--warning)">🔒</div>
+          </div>
+          <div class="kpi-val" id="kpi-reserved-units">0</div>
+          <div class="kpi-sub">Locked for picking/packing</div>
+        </div>
+
+        <div class="kpi-card kpi-purple">
+          <div class="kpi-header">
+            <span class="kpi-title">Active Pipeline Orders</span>
+            <div class="kpi-icon" style="background:rgba(139,92,246,0.15);color:var(--accent)">🚀</div>
+          </div>
+          <div class="kpi-val" id="kpi-active-orders">0</div>
+          <div class="kpi-sub">In Pick / Pack / Dispatch flow</div>
+        </div>
+
+        <div class="kpi-card" style="border-color:var(--danger)">
+          <div class="kpi-header">
+            <span class="kpi-title" style="color:#f87171">Low-Stock Warnings</span>
+            <div class="kpi-icon" style="background:var(--danger-bg);color:var(--danger)">⚠️</div>
+          </div>
+          <div class="kpi-val" id="kpi-low-stock-count" style="color:var(--danger)">0</div>
+          <div class="kpi-sub" style="color:#fca5a5">Below safety buffer threshold</div>
+        </div>
+      </div>
+
+      <!-- Warehouse Location Bins & 2D Layout Map -->
+      <div class="warehouse-rack-view">
+        <div class="warehouse-rack-header">
+          <div>
+            <h3 style="font-size:16px;font-weight:700;color:#fff">Warehouse Physical Layout (Nagpur Central Hub MIHAN)</h3>
+            <p style="font-size:12px;color:var(--text-muted)">Interactive Zone &amp; Bin Matrix (de Koster et al. 2007 Order Picking Routing Architecture)</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center;font-size:11px">
+            <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:rgba(59,130,246,0.4);border:1px solid var(--primary);border-radius:2px"></span> Stored Product</span>
+            <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:rgba(239,68,68,0.4);border:1px solid var(--danger);border-radius:2px"></span> Low Stock Bin</span>
+            <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:var(--bg-subtle);border:1px dashed var(--border-color);border-radius:2px"></span> Empty Slot</span>
+          </div>
+        </div>
+        <div class="rack-grid" id="rack-zones-container">
+          <!-- Dynamic Zones -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================= VIEW 2: INVENTORY & FORECASTING ================= -->
+    <div id="view-inventory" class="tab-view" style="display:none">
+      <div class="table-card">
+        <div class="table-header">
+          <div>
+            <h3 style="font-size:16px;font-weight:700;color:#fff">Product Inventory &amp; Demand Forecasting</h3>
+            <p style="font-size:12px;color:var(--text-muted)">Real-time stock checking, warehouse bin allocations, and sales-velocity depletion predictions.</p>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="btn btn-primary" onclick="openCreateOrderModal()">+ Create Customer Order</button>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Product &amp; SKU</th>
+                <th>Location / Bin</th>
+                <th>Selling Price</th>
+                <th>Physical Stock</th>
+                <th>Reserved Stock</th>
+                <th>Free Available</th>
+                <th>Stock Runout Forecast</th>
+                <th>Status Trigger</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="inventory-table-body">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 3: ORDER FULFILLMENT PIPELINE ================= -->
+    <div id="view-fulfillment" class="tab-view" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+        <div>
+          <h2 style="font-size:20px;font-weight:800;color:#fff">Order-to-Delivery Fulfillment Pipeline</h2>
+          <p style="font-size:13px;color:var(--text-muted)">Stage-gate order tracking: Stock Reservation &rarr; Picking &rarr; Packing &rarr; Dispatch &rarr; Delivery.</p>
+        </div>
+        <button class="btn btn-primary" onclick="openCreateOrderModal()">+ New Customer Order</button>
+      </div>
+
+      <!-- Kanban Columns -->
+      <div class="pipeline-grid" id="pipeline-columns-container">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <!-- ================= VIEW 4: PURCHASING & GRN ================= -->
+    <div id="view-purchasing" class="tab-view" style="display:none">
+      <div class="table-card">
+        <div class="table-header">
+          <div>
+            <h3 style="font-size:16px;font-weight:700;color:#fff">Supplier Purchase Orders &amp; Goods Receipt Notes (GRN)</h3>
+            <p style="font-size:12px;color:var(--text-muted)">Track inbound supplier stock deliveries and automatically credit warehouse inventory upon verification.</p>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>PO Number</th>
+                <th>Supplier &amp; Date</th>
+                <th>Items Ordered</th>
+                <th>Total Value</th>
+                <th>Destination Hub</th>
+                <th>Status</th>
+                <th>Goods Receipt (GRN)</th>
+              </tr>
+            </thead>
+            <tbody id="po-table-body">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 5: AUDIT TRAIL ================= -->
+    <div id="view-audit" class="tab-view" style="display:none">
+      <div class="table-card">
+        <div class="table-header">
+          <div>
+            <h3 style="font-size:16px;font-weight:700;color:#fff">System Stock Movement &amp; Audit Trail</h3>
+            <p style="font-size:12px;color:var(--text-muted)">Cryptographic timestamped log of stock receipts, reservations, picks, and dispatches.</p>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>User / Worker</th>
+                <th>Action Type</th>
+                <th>Details &amp; Audit Log Record</th>
+              </tr>
+            </thead>
+            <tbody id="audit-table-body">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ================= MODAL: CREATE CUSTOMER ORDER ================= -->
+  <div class="modal-overlay" id="modal-create-order">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Create Customer Order (Stock Checking &amp; Reservation)</h3>
+        <button class="modal-close" onclick="closeModal('modal-create-order')">&times;</button>
+      </div>
+      <form onsubmit="submitCustomerOrder(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Customer Enterprise Name</label>
+            <input type="text" id="co-customer-name" class="form-control" placeholder="e.g. Tata Consultancy Services (Nagpur)" required />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Fulfillment Warehouse</label>
+              <select id="co-warehouse-select" class="form-control">
+                <option value="WH-NAG-01">Central Hub Nagpur (MIHAN)</option>
+                <option value="WH-MUM-02">West Coast Depot Mumbai</option>
+                <option value="WH-PUN-03">Pune Tech Spoke</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Select Item &amp; SKU</label>
+              <select id="co-product-select" class="form-control"></select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Quantity to Order</label>
+            <input type="number" id="co-qty-input" class="form-control" min="1" max="100" value="2" required />
+            <p style="font-size:11px;color:var(--text-muted);margin-top:4px">
+              ℹ️ Available stock will be verified. If valid, units are automatically marked as <strong>Reserved</strong> to prevent double-allocation.
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('modal-create-order')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Check Stock &amp; Reserve Order</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: ORDER FULFILLMENT PIPELINE STEPPING ================= -->
+  <div class="modal-overlay" id="modal-fulfillment">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="f-order-id">ORD-2026-XXXX</h3>
+        <button class="modal-close" onclick="closeModal('modal-fulfillment')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="display:flex;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border-color)">
+          <div>
+            <div style="font-size:11px;color:var(--text-muted)">Customer:</div>
+            <strong id="f-customer-name" style="font-size:14px;color:#fff">-</strong>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:11px;color:var(--text-muted)">Stage:</div>
+            <span class="badge badge-blue" id="f-status-badge">-</span>
+          </div>
+        </div>
+
+        <div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:8px">WAREHOUSE PICK LIST &amp; BIN LOCATIONS:</div>
+        <div id="f-pick-list"></div>
+
+        <div class="form-row" style="margin-top:16px;background:var(--bg-subtle);padding:12px;border-radius:6px">
+          <div>
+            <span style="font-size:11px;color:var(--text-muted)">Assigned Warehouse:</span><br/>
+            <strong id="f-warehouse" style="color:#fff">-</strong>
+          </div>
+          <div>
+            <span style="font-size:11px;color:var(--text-muted)">Total Invoice Value:</span><br/>
+            <strong id="f-total-val" class="mono" style="color:var(--primary)">-</strong>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('modal-fulfillment')">Close</button>
+        <button type="button" class="btn btn-primary" id="f-action-btn">Advance Stage</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: RAISE PURCHASE ORDER ================= -->
+  <div class="modal-overlay" id="modal-raise-po">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Raise Purchase Order to Supplier (Replenishment)</h3>
+        <button class="modal-close" onclick="closeModal('modal-raise-po')">&times;</button>
+      </div>
+      <form onsubmit="submitPurchaseOrder(event)">
+        <input type="hidden" id="po-product-id" />
+        <div class="modal-body">
+          <div style="background:var(--bg-subtle);padding:12px;border-radius:6px;margin-bottom:16px">
+            <span style="font-size:11px;color:var(--text-muted)">Product to Replenish:</span><br/>
+            <strong id="po-product-name" style="font-size:14px;color:#fff">-</strong>
+          </div>
+          <div class="form-group">
+            <label>Approved Supplier</label>
+            <select id="po-supplier-select" class="form-control"></select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Replenishment Quantity</label>
+              <input type="number" id="po-qty-input" class="form-control" min="5" value="20" required />
+            </div>
+            <div class="form-group">
+              <label>Delivery Warehouse</label>
+              <select id="po-warehouse-select" class="form-control">
+                <option value="WH-NAG-01">Central Hub Nagpur</option>
+                <option value="WH-MUM-02">West Coast Depot Mumbai</option>
+                <option value="WH-PUN-03">Pune Tech Spoke</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('modal-raise-po')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Transmit Purchase Order</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: ACADEMIC SYNOPSIS & LITERATURE REVIEW ================= -->
+  <div class="modal-overlay" id="modal-synopsis">
+    <div class="modal-box modal-box-lg">
+      <div class="modal-header">
+        <div>
+          <h3>Project Synopsis Specification &amp; Academic Mapping</h3>
+          <span style="font-size:12px;color:var(--text-muted)">Ramdeobaba University • CSE Core • Session 2026-2027</span>
+        </div>
+        <button class="modal-close" onclick="closeModal('modal-synopsis')">&times;</button>
+      </div>
+      <div class="modal-body" style="font-size:13px;line-height:1.6">
+        
+        <div style="background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(139,92,246,0.1));padding:16px;border-radius:8px;border:1px solid var(--border-color);margin-bottom:20px">
+          <h4 style="color:#fff;font-size:15px;margin-bottom:6px">SMART WAREHOUSE AND ORDER FULFILLMENT ERP SYSTEM</h4>
+          <p style="color:var(--text-sub)">
+            <strong>Student Contributors:</strong> Nachiket Jagdale (A7-20), Mayank Ruchandani (A7-15), Yash Jagyasi (A7-49)<br/>
+            <strong>Subject Coordinator:</strong> Kaushik R. Roy | <strong>Programme:</strong> E-commerce and ERP (Semester V)
+          </p>
+        </div>
+
+        <h4 style="color:var(--primary);margin:16px 0 6px">1. Background &amp; Problem Statement</h4>
+        <p style="color:var(--text-sub)">
+          In many small and medium businesses, inventory, purchasing, and order records exist in isolated files. This creates stock mismatches, missed replenishment cycles, and zero visibility into order fulfillment. Warehouse studies demonstrate that receiving, storage, picking, and shipping must function as an integrated workflow.
+        </p>
+
+        <h4 style="color:var(--primary);margin:16px 0 6px">2. Literature Review &amp; Research Gap Addressed</h4>
+        <div style="border:1px solid var(--border-color);border-radius:6px;overflow:hidden;margin-bottom:12px">
+          <table>
+            <thead>
+              <tr>
+                <th>Author(s) &amp; Year</th>
+                <th>Title / Focus</th>
+                <th>Key Contribution</th>
+                <th>Addressed in our ERP</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Gu et al. (2007)</strong></td>
+                <td>Warehouse Operations</td>
+                <td>Reviews receiving, storage, picking, shipping.</td>
+                <td><span class="badge badge-green">Integrated Single Workflow</span></td>
+              </tr>
+              <tr>
+                <td><strong>de Koster et al. (2007)</strong></td>
+                <td>Order Picking</td>
+                <td>Reviews storage layout, zoning, batching.</td>
+                <td><span class="badge badge-green">Zone &amp; Bin Matrix System</span></td>
+              </tr>
+              <tr>
+                <td><strong>Masae et al. (2020)</strong></td>
+                <td>Picker Routing</td>
+                <td>Picker routing optimization methods.</td>
+                <td><span class="badge badge-green">Ordered Pick Lists by Aisle</span></td>
+              </tr>
+              <tr>
+                <td><strong>Haddara &amp; Zach (2011)</strong></td>
+                <td>ERP in SMEs</td>
+                <td>Implementation hurdles for small enterprises.</td>
+                <td><span class="badge badge-green">Lightweight Modular Web ERP</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4 style="color:var(--primary);margin:16px 0 6px">3. Implementation Architecture (Technology Stack)</h4>
+        <ul style="padding-left:20px;color:var(--text-sub)">
+          <li><strong>Frontend:</strong> Modern Web ERP UI with responsive CSS Grid/Flexbox, real-time KPI reactive state, and modal management.</li>
+          <li><strong>Backend API:</strong> Python with FastAPI, Pydantic schemas, and JWT role-based access (admin vs warehouse staff).</li>
+          <li><strong>Database Engine:</strong> PostgreSQL relational schema mapping products, suppliers, warehouses, stock movements, and customer orders.</li>
+          <li><strong>Order Workflow:</strong> <code>Stock Check &rarr; Stock Reservation &rarr; Pick List &rarr; Packing Slip &rarr; Dispatch Manifest &rarr; Delivery Confirmation</code>.</li>
+        </ul>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="closeModal('modal-synopsis')">Understood</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= TOAST CONTAINER ================= -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>Smart Warehouse &amp; Order Fulfillment ERP System</strong> • Session 2026–2027<br/>
+        Department of Computer Science &amp; Engineering (CSE Core), Ramdeobaba University
+      </div>
+      <div class="student-pills">
+        <div class="student-pill">Nachiket Jagdale (A7-20)</div>
+        <div class="student-pill">Mayank Ruchandani (A7-15)</div>
+        <div class="student-pill">Yash Jagyasi (A7-49)</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
